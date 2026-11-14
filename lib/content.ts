@@ -1,12 +1,11 @@
+import { siteUrl } from './env';
+
 // Conteúdo do site. Edite aqui; no futuro pode vir de um CMS headless (Sanity, Payload).
 
 export const site = {
   name: 'W2 Comunicação e Consultoria',
   short: 'W2',
-  // Em homologação sem NEXT_PUBLIC_SITE_URL, usa o endereço gerado pela Vercel.
-  url:
-    process.env.NEXT_PUBLIC_SITE_URL ??
-    (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : 'http://localhost:3000'),
+  url: siteUrl, // ver lib/env.ts
   description:
     'Agência full-service de publicidade, marketing digital, branding, mídia e consultoria estratégica para empresas que querem crescer.',
   email: 'contato@w2comunicacao.com.br',

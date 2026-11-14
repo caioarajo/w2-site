@@ -7,7 +7,7 @@ import Footer from '@/components/Footer';
 import WhatsAppFloat from '@/components/WhatsAppFloat';
 import CookieConsent from '@/components/CookieConsent';
 import Cursor from '@/components/Cursor';
-import { isHomolog, isProduction } from '@/lib/env';
+import { isHomolog, isIndexable, isProduction } from '@/lib/env';
 
 const display = Unbounded({ subsets: ['latin'], weight: ['400', '600', '800'], variable: '--font-display', display: 'swap' });
 const body = Manrope({ subsets: ['latin'], weight: ['400', '500', '700'], variable: '--font-body', display: 'swap' });
@@ -25,8 +25,8 @@ export const metadata: Metadata = {
   },
   twitter: { card: 'summary_large_image' },
   alternates: { canonical: '/' },
-  // Fora da produção, nenhuma página deve aparecer no Google.
-  robots: isProduction ? { index: true, follow: true } : { index: false, follow: false, nocache: true },
+  // Só indexa em produção com domínio oficial (NEXT_PUBLIC_SITE_URL).
+  robots: isIndexable ? { index: true, follow: true } : { index: false, follow: false, nocache: true },
 };
 
 export const viewport: Viewport = { themeColor: '#0b0b10' };

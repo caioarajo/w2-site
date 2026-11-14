@@ -64,7 +64,7 @@ Os contatos aparecem em **Table Editor → leads**. A coluna `status` serve de f
 | | Homologação | Produção |
 |---|---|---|
 | Selo laranja "Homologação" no topo | aparece | não aparece |
-| Google (robots.txt e meta robots) | bloqueado | liberado, com sitemap |
+| Google (robots.txt e meta robots) | bloqueado | liberado só depois de cadastrar `NEXT_PUBLIC_SITE_URL` com o domínio oficial (até lá, o endereço .vercel.app fica bloqueado) |
 | Google Analytics | desligado | ligado após o consentimento de cookies |
 | Assunto do e-mail de contato | começa com `[HOMOLOGAÇÃO]` | normal |
 | Coluna `ambiente` no Supabase | `homolog` | `production` |
