@@ -1,0 +1,22 @@
+# dependências e build
+node_modules/
+.next/
+out/
+*.tsbuildinfo
+next-env.d.ts
+
+# variáveis de ambiente (chaves NUNCA vão para o GitHub)
+.env
+.env*.local
+
+# Vercel / Supabase CLI
+.vercel
+supabase/.temp/
+supabase/.branches/
+
+# versões antigas do site (ficam só no computador)
+_arquivo/
+
+# sistema
+.DS_Store
+Thumbs.db
