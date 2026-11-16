@@ -1,13 +1,14 @@
 import Link from 'next/link';
 import { nav, site, whatsappUrl } from '@/lib/content';
 import CookiePrefsButton from './CookiePrefsButton';
+import Logo from './Logo';
 
 export default function Footer() {
   return (
     <footer className="site-footer">
-      <p className="site-footer__big" aria-hidden="true">
-        W2<span>/</span><wbr />Comunicação<span>/</span><wbr />Consultoria<span>/</span>
-      </p>
+      <div className="site-footer__brand">
+        <Logo weight={300} withTagline className="site-footer__logo" />
+      </div>
 
       <div className="site-footer__grid wrap">
         <div>

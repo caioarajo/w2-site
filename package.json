@@ -6,7 +6,8 @@
     "dev": "next dev --turbopack",
     "build": "next build",
     "start": "next start",
-    "lint": "tsc --noEmit"
+    "lint": "tsc --noEmit",
+    "logo": "node scripts/build-logo.mjs"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.119.0",
@@ -15,9 +16,12 @@
     "react-dom": "19.3.1"
   },
   "devDependencies": {
+    "@fontsource/manrope": "^5.3.0",
+    "@fontsource/unbounded": "^5.3.0",
     "@types/node": "^22",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "opentype.js": "^2.0.0",
     "typescript": "^5"
   }
 }

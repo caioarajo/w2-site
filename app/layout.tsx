@@ -36,6 +36,8 @@ const jsonLd = {
   '@type': 'ProfessionalService',
   name: site.name,
   url: site.url,
+  logo: `${site.url}/brand/w2-icone-512.png`,
+  image: `${site.url}/brand/w2-logo-para-fundo-claro.png`,
   email: site.email,
   telephone: site.phone,
   address: site.address,

@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import { useEffect, useRef, useState } from 'react';
 import { nav, site, whatsappUrl } from '@/lib/content';
+import Logo from './Logo';
 
 export default function Header() {
   const [open, setOpen] = useState(false);
@@ -35,8 +36,7 @@ export default function Header() {
   return (
     <header className={cls}>
       <Link href="/" className="brand" aria-label={`${site.name} — início`} onClick={close}>
-        <span className="brand__mark">W2</span>
-        <span className="brand__name">Comunicação<br />&amp; Consultoria</span>
+        <Logo withTagline title={null} className="brand__logo" />
       </Link>
 
       <nav className={`site-nav${open ? ' is-open' : ''}`} id="site-nav" aria-label="Principal">
