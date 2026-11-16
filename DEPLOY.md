@@ -4,83 +4,67 @@ Como o projeto está organizado:
 
 | Peça | Função |
 |---|---|
-| **GitHub** | Guarda o código. Branch `homolog` = homologação, branch `main` = produção. |
-| **Vercel** | Hospeda o site. Cada push na `homolog` atualiza a homologação; cada push na `main` atualiza a produção. |
-| **Supabase** | Banco de dados. Guarda os contatos do formulário na tabela `leads`. Um projeto para cada ambiente. |
+| **GitHub** | Guarda o código. A branch `main` é o site no ar. |
+| **Vercel** | Hospeda o site. Cada push na `main` publica a nova versão em cerca de 1 minuto. |
+| **Supabase** | Banco de dados. Guarda os contatos do formulário na tabela `leads`. |
 
-Fluxo do dia a dia: **altera → push na `homolog` → cliente aprova no link de homologação → merge na `main` → produção.**
+- Repositório: https://github.com/caioarajo/w2-site
+- Site: https://w2-site-eight.vercel.app
+
+Fluxo do dia a dia: **altera → confere em `npm run dev` (http://localhost:3000) → commit → push na `main` → no ar.**
+
+> Antes do push, rode `npm run build` para garantir que não há erro. Se o build falhar na Vercel,
+> o site continua na versão anterior e nada quebra para os visitantes.
 
 ---
 
-## 1. GitHub (uma vez só)
-
-O repositório local já está criado, com o primeiro commit e as branches `main` e `homolog`.
-
-1. Crie um repositório **privado e vazio** em https://github.com/new, com o nome `w2-site`. Não marque README nem .gitignore.
-2. No terminal, dentro de `C:\PROJETOS\SITE W2`, troque `SEU-USUARIO` e rode:
+## 1. Publicar uma alteração
 
 ```bash
-git remote add origin https://github.com/SEU-USUARIO/w2-site.git
-git push -u origin main
-git push -u origin homolog
+cd "C:\PROJETOS\SITE W2"
+npm run build                 # confere se está tudo certo
+git add .
+git commit -m "Descreva a alteração"
+git push                      # publica na produção
 ```
 
-Na primeira vez, o Windows abre uma janela de login do GitHub.
+Para desfazer uma publicação: na Vercel, em **Deployments**, abra um deploy anterior e use **Promote to Production**.
 
 ## 2. Supabase (uma vez só)
 
-1. Em https://supabase.com/dashboard, crie **dois projetos**: `w2-homolog` e `w2-producao`. Use a região South America (São Paulo).
-2. Em **cada** projeto, abra **SQL Editor → New query**, cole o conteúdo de
+1. Em https://supabase.com/dashboard, crie um projeto `w2-site`. Use a região South America (São Paulo).
+2. Abra **SQL Editor → New query**, cole o conteúdo de
    [`supabase/migrations/20261114000000_create_leads.sql`](supabase/migrations/20261114000000_create_leads.sql) e clique em **Run**.
-3. Em cada projeto, anote em **Project Settings → API**:
+3. Anote em **Project Settings → API**:
    - **Project URL**, que vai para `SUPABASE_URL`
    - **service_role / secret key**, que vai para `SUPABASE_SERVICE_ROLE_KEY`. Essa chave é secreta: não compartilhe nem coloque no código.
 
 Os contatos aparecem em **Table Editor → leads**. A coluna `status` serve de funil: novo, em contato, proposta, fechado.
 
-## 3. Vercel (uma vez só)
+## 3. Variáveis na Vercel (uma vez só)
 
-1. Entre em https://vercel.com com a conta do GitHub, clique em **Add New → Project**, importe o `w2-site` e clique em **Deploy**. O Next.js é detectado sozinho.
-2. Em **Settings → Environment Variables**, cadastre:
+Em **Settings → Environment Variables**, ambiente **Production**:
 
-| Variável | Production (`main`) | Preview (`homolog`) |
-|---|---|---|
-| `NEXT_PUBLIC_SITE_URL` | `https://w2comunicacao.com.br` | `https://homolog.w2comunicacao.com.br` |
-| `SUPABASE_URL` | URL do `w2-producao` | URL do `w2-homolog` |
-| `SUPABASE_SERVICE_ROLE_KEY` | chave do `w2-producao` | chave do `w2-homolog` |
-| `RESEND_API_KEY` (opcional) | sua chave | sua chave |
-| `NEXT_PUBLIC_GA_ID` (opcional) | `G-XXXXXXX` | deixe vazio |
+| Variável | Valor |
+|---|---|
+| `SUPABASE_URL` | URL do projeto Supabase |
+| `SUPABASE_SERVICE_ROLE_KEY` | chave secreta do Supabase |
+| `NEXT_PUBLIC_SITE_URL` | `https://w2comunicacao.com.br`. Só depois de ligar o domínio; é o que libera o Google. |
+| `RESEND_API_KEY` (opcional) | chave do Resend, para receber cada contato por e-mail |
+| `NEXT_PUBLIC_GA_ID` (opcional) | `G-XXXXXXX` do Google Analytics |
 
-3. Em **Settings → Domains**, adicione:
-   - `w2comunicacao.com.br`, ligado à **Production**
-   - `homolog.w2comunicacao.com.br`, ligado à branch **`homolog`** (opção *Git Branch*)
+Depois de cadastrar, vá em **Deployments** e use **Redeploy** no último deploy para que as variáveis passem a valer.
 
-   A Vercel mostra os registros DNS a criar no seu provedor de domínio.
-4. Em **Settings → Deployment Protection**, ative **Vercel Authentication** ou **Password Protection** para os deploys de Preview. Assim só a equipe e o cliente abrem a homologação.
-5. Depois de cadastrar as variáveis, vá em **Deployments** e use **Redeploy** no último deploy de cada branch, para que elas passem a valer.
+## 4. Domínio oficial
 
-## O que muda sozinho entre os ambientes
+Em **Settings → Domains**, adicione `w2comunicacao.com.br` e `www.w2comunicacao.com.br`. A Vercel mostra os registros DNS a criar no provedor do domínio.
 
-| | Homologação | Produção |
-|---|---|---|
-| Selo laranja "Homologação" no topo | aparece | não aparece |
-| Google (robots.txt e meta robots) | bloqueado | liberado só depois de cadastrar `NEXT_PUBLIC_SITE_URL` com o domínio oficial (até lá, o endereço .vercel.app fica bloqueado) |
-| Google Analytics | desligado | ligado após o consentimento de cookies |
-| Assunto do e-mail de contato | começa com `[HOMOLOGAÇÃO]` | normal |
-| Coluna `ambiente` no Supabase | `homolog` | `production` |
+Depois cadastre `NEXT_PUBLIC_SITE_URL` (passo 3) e faça um **Redeploy**.
 
-## Publicar uma alteração
+## Google: quando o site aparece nas buscas
 
-```bash
-git checkout homolog
-# ...edite os arquivos...
-git add .
-git commit -m "Descreva a alteração"
-git push                      # atualiza a homologação
-
-# depois da aprovação:
-git checkout main
-git merge homolog
-git push                      # atualiza a produção
-git checkout homolog
-```
+| Situação | Google |
+|---|---|
+| Endereço provisório `w2-site-eight.vercel.app` | bloqueado (`noindex`), para não competir com o domínio oficial |
+| Produção com `NEXT_PUBLIC_SITE_URL` cadastrada | liberado, com sitemap |
+| Qualquer outra branch enviada ao GitHub (deploy de teste da Vercel) | bloqueado e com o selo laranja "Homologação" |

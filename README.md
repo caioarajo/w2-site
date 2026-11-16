@@ -46,12 +46,12 @@ _arquivo/               versões anteriores (protótipo HTML e tema WordPress)
 | SEO | Metadata API, Open Graph, sitemap.xml, robots.txt, Schema.org `ProfessionalService` |
 | Hospedagem | Vercel: importar o repositório e publicar |
 
-## Publicação (homologação e produção)
+## Publicação
 
 O passo a passo completo de GitHub, Vercel e Supabase está em **[DEPLOY.md](DEPLOY.md)**.
 
-- Branch `homolog` → site de homologação: selo laranja, bloqueado para o Google, sem Analytics.
-- Branch `main` → site de produção.
+- Branch `main` → site no ar (https://w2-site-eight.vercel.app). Cada push publica automaticamente.
+- Logo e arquivos da marca → `public/brand/` (gerados por `npm run logo`).
 - Contatos do formulário → tabela `leads` no Supabase (SQL em `supabase/migrations/`) e, se configurado, e-mail pelo Resend.
 
 ## Próximos passos sugeridos
